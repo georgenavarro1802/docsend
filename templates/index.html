@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+    {{ title }}
+{% endblock %}
+
+{% block scripts %}
+    <script xmlns="http://www.w3.org/1999/html">
+
+        function isValidEmailAddress(emailAddress) {
+            var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+            return pattern.test(emailAddress);
+        }
+
+        function isUrlValid(url) {
+            return /^(https):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+        }
+
+        function updateProgress(progressBarElement, progressBarMessageElement, progress) {
+            progressBarElement.style.width = progress.percent + "%";
+            progressBarMessageElement.innerHTML = progress.current + ' of ' + progress.total + ' processed.';
+        }
+
+        validation = function(data){
+            var error_message = '';
+
+            $(data).each(function(i, field){
+                if(field.name === 'url'){
+                    if (field.value === ''){
+                        error_message = "Please enter a link to continue.";
+                        return false;
+                    }
+                    if(!isUrlValid(field.value)){
+                        error_message = "Please enter a valid url to continue (note: you have to use https in place of http)";
+                        return false;
+                    }
+                }
+
+                if(field.name === 'emailad'){
+                    if (field.value && !isValidEmailAddress(field.value)) {
+                        error_message = "Please enter a valid email address to continue.";
+                        return false;
+                    }
+                }
+
+            });
+            return error_message;
+        };
+
+
+        $(function () {
+
+            $('#btn_scrape').on('click', function() {
+                var elem = $(this);
+                var form_scrape = $("#form_scrape");
+                var span_scraping = $("#span_scraping_text");
+                var span_scrape = $("#span_scrape");
+                var progress_wrapper = $("#progress-wrapper");
+
+                var data = form_scrape.serializeArray();
+                var error_message = validation(data);
+
+                if (error_message.length) {
+                    sweetAlertErrorRedirect(error_message);
+                } else {
+
+                    elem.addClass("disabled");
+                    span_scraping.fadeIn(300);
+                    span_scrape.hide();
+
+                    // progressbar
+                    var bar = document.getElementById("progress-bar");
+                    var barMessage = document.getElementById("progress-bar-message");
+                    for (var i = 0; i < 51; i++) {
+                        setTimeout(updateProgress, 600 * i, bar, barMessage, {
+                            percent: 2 * i,
+                            current: 2 * i,
+                            total: 100
+                        })
+                    }
+
+                    $.ajax({
+                        url: "{% url 'savepdf' %}",
+                        data: data,
+                        type: "POST",
+                        dataType: "json",
+                        success: function(data) {
+                            elem.removeClass("disabled");
+                            progress_wrapper.hide();
+                            span_scraping.hide();
+                            span_scrape.fadeIn(300);
+                            window.open(data.downloadUrl);
+                        },
+                        error: function () {
+                            elem.removeClass("disabled");
+                            span_scraping.hide();
+                            span_scrape.fadeIn(300);
+                            sweetAlertErrorRedirect("Error");
+                        }
+                    });
+
+                }
+
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+        <div class="row text-center">
+            <div class="col-sm-12">
+                <h3>{{ title }}</h3>
+            </div>
+        </div>
+
+        <div class="row m-4">
+
+            <div class="col-sm-2"></div>
+
+            <div class="col-sm-8">
+                <form id="form_scrape" class="form-horizontal well text-left" action="{% url 'savepdf' %}" method="POST" autocomplete="off">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="control-label" for="email">
+                                    <strong>Link:</strong>
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="url" placeholder="enter link, i.e. https://docsend.com/view/p8jxsqr" name="url">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="control-label" for="pwd">
+                                    <strong>Email:</strong>
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="emailad" placeholder="enter email if needed ..." name="emailad">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="control-label" for="pwd">
+                                    <strong>Docsend Password:</strong>
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="emailpass" placeholder="enter password if needed ..." name="emailpass" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 2em">
+                        <a class="btn btn-primary btn-block text-white" id="btn_scrape">
+                            <span id="span_scraping_text" style="display: none"> Scraping... All good things take time, your pdf file will be ready soon!</span>
+                            <span id="span_scrape">Scrape</span>
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-sm-2"></div>
+        </div>
+
+        <div id="progress-wrapper">
+            <div id="progress-bar" style="background-color: green; width: 0%; margin-top: 1em;">&nbsp;</div>
+            <div id="progress-bar-message"></div>
+        </div>
+
+    </div>
+{% endblock %}

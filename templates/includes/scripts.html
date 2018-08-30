@@ -1,0 +1,38 @@
+{% load static %}
+
+<script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
+<script src="{% static 'js/popper.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/sweetalert.min.js' %}"></script>
+
+<script>
+    $(function(){
+
+        sweetAlertSuccessRedirect = function (url, msg) {
+            swal({
+                title: 'Great!!!',
+                type: "success",
+                text: msg,
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "OK",
+                closeOnConfirm: false
+            }, function(isConfirm){
+                if (isConfirm) {
+                    location.href = url;
+                }
+            });
+        };
+
+        sweetAlertErrorRedirect = function (msg) {
+            swal({
+                title: 'Oops!!!',
+                type: "error",
+                text: msg,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "OK",
+                closeOnConfirm: false
+            });
+        };
+
+    });
+</script>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% include 'includes/head.html' %}
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    {% include 'includes/header.html' %}
+    <div class="row m-5">
+        {% block content %}{% endblock %}
+    </div>
+    {% include 'includes/scripts.html' %}
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>
