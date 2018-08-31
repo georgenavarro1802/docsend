@@ -15,7 +15,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-from docsend_scraper.settings import MEDIA_ROOT
+from docsend_scraper.settings import MEDIA_ROOT, BASE_DIR
 
 
 def trim(im):
@@ -49,7 +49,8 @@ def savepdf(request):
             browser = webdriver.Chrome(r'./chromedriver')
         else:
             # browser = webdriver.Chrome(r'./chromedriver_linux', chrome_options=chrome_options)
-            browser = webdriver.Chrome(executable_path=os.path.abspath("chromedriver"), chrome_options=chrome_options)
+            browser = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=chrome_options)
+            # browser = webdriver.Chrome(executable_path=BASE_DIR + './chromedriver_linux', chrome_options=chrome_options)
 
         browser.get(url)
 
