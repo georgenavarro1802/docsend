@@ -48,8 +48,9 @@ def savepdf(request):
             # browser = webdriver.Chrome(r'./chromedriver')
             browser = webdriver.Chrome(r'./chromedriver')
         else:
+            browser = webdriver.Firefox()
             # browser = webdriver.Chrome(r'./chromedriver_linux', chrome_options=chrome_options)
-            browser = webdriver.Chrome(BASE_DIR + '/chromedriver_linux', chrome_options=chrome_options)
+            # browser = webdriver.Chrome(BASE_DIR + '/chromedriver_linux', chrome_options=chrome_options)
 
         browser.get(url)
 
