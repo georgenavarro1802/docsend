@@ -39,14 +39,15 @@ def savepdf(request):
         ID = url[url.rfind('/') + 1:]
 
         # START PROCESS
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
+        # chrome_options = Options()
+        # chrome_options.add_argument("--headless")
 
         if platform.system() == "Darwin":
             # browser = webdriver.Chrome(r'./chromedriver')
             browser = webdriver.Chrome(r'./chromedriver')
         else:
-            browser = webdriver.Chrome(r'./chromedriver_linux', chrome_options=chrome_options)
+            # browser = webdriver.Chrome(r'./chromedriver_linux', chrome_options=chrome_options)
+            browser = webdriver.Chrome(executable_path=r'./chromedriver_linux')
 
         browser.get(url)
 
