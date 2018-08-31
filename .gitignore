@@ -1,0 +1,9 @@
+.idea/
+.idea/*
+media/*
+**/__pycache__/
+static/admin/
+*.swp
+
+# MacOS
+*.DS_Store

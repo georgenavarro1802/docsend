@@ -91,12 +91,13 @@
                             span_scraping.hide();
                             span_scrape.fadeIn(300);
                             window.open(data.downloadUrl);
+
                         },
-                        error: function () {
+                        error: function (data) {
                             elem.removeClass("disabled");
                             span_scraping.hide();
                             span_scrape.fadeIn(300);
-                            sweetAlertErrorRedirect("Error");
+                            sweetAlertErrorRedirect(data.error);
                         }
                     });
 

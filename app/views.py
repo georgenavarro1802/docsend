@@ -144,7 +144,7 @@ def savepdf(request):
         return JsonResponse({'downloadUrl': os.path.join('media', pdfname)})
 
     except Exception as ex:
-        pass
+        return JsonResponse({'error': ex.__str__()})
 
 
 def index(request):
