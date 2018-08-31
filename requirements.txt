@@ -4,3 +4,4 @@ fpdf==1.7.2
 image==1.5.24
 Pillow==5.1.0
 selenium==3.12.0
+django-heroku==0.3.1
