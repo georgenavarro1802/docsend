@@ -42,7 +42,7 @@ def savepdf(request):
         chrome_options = Options()
         chrome_options.add_argument("--headless")
 
-        if not platform.system() == "Darwin":
+        if platform.system() == "Darwin":
             # browser = webdriver.Chrome(r'./chromedriver')
             browser = webdriver.Chrome(r'./chromedriver')
         else:
